@@ -36,11 +36,18 @@ function edit(&$model){
 
             $id = isset($_POST['id']) ? $_POST['id'] : null;
             $file = $_FILES['file']['tmp_name'];
+            if (empty($_POST['title'])){
+                $_POST['title'] = "Untitled";
+            }
+            else if (empty($_POST['author'])){
+                $_POST['author'] = "Anonymous";
+            }
+
             $image = [
                 'title' => $_POST['title'],
                 'author' => $_POST['author'],
+                'wmark' => $_POST['wmark'],
                 'id'=> $id
-                //'ext' => null;
             ];
             if (upload($id, $file, $image)) {
                 return 'redirect:images';

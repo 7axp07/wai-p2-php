@@ -16,6 +16,10 @@
         <input type="text" name="author" value="<?= $image['author'] ?>" />
     </label>
     <label>
+        <span>Watermark:</span>
+        <input type="text" name="wmark" value="<?= $image['wmark'] ?>" required />
+    </label>
+    <label>
         <span>Image:</span>
         <input type="file" name="file" value="<?= $image['file'] ?>" required/>
     </label>

@@ -11,6 +11,7 @@
     <tr>
         <th>Image</th>
         <th>Author</th>
+        <th>Actions</th>
     </tr>
     </thead>
 
@@ -19,7 +20,7 @@
         <?php foreach ($images as $image): ?>
             <tr>
                 <td>
-                    <a href="view?id=<?= $image['_id'] ?>"><?= $image['title'] ?></a>
+                <a href="view?id=<?= $image['_id'] ?>"><img src="upload/<?= $image['_id']?>.<?= $image['ext']?>" alt="<?= $image['title'] ?>"/></a>
                 </td>
                 <td><?= $image['author'] ?></td>
                 <td>
@@ -45,7 +46,7 @@
     </tfoot>
 </table>
 
-//<?php dispatch($routing, '/gallery') ?>
+
 
 </body>
 </html>
