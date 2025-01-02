@@ -1,14 +1,8 @@
-<div id="cart">
+<div id="gallery">
 
-    <h2>Koszyk</h2>
+    <h2>Gallery</h2>
 
     <table>
-        <thead>
-        <tr>
-            <th>Nazwa</th>
-            <th>Ilość</th>
-        </tr>
-        </thead>
 
         <tbody>
         <?php if (!empty($cart)): ?>
@@ -27,15 +21,5 @@
         <?php endif ?>
         </tbody>
 
-        <tfoot>
-        <tr>
-            <td>Łącznie pozycji: <?= count($cart) ?></td>
-            <td>
-                <form action="cart/clear" method="post" class="inline">
-                    <input type="submit" value="Usuń wszystkie" name="clear_cart"/>
-                </form>
-            </td>
-        </tr>
-        </tfoot>
     </table>
 </div>

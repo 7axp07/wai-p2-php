@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edycja</title>
+    <title>Add/Edit</title>
     <link rel="stylesheet" href="static/css/styles.css"/>
 </head>
 <body>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <label>
-        <span>Nazwa:</span>
-        <input type="text" name="name" value="<?= $product['name'] ?>" required/>
+        <span>Title:</span>
+        <input type="text" name="title" value="<?= $image['title'] ?>" />
     </label>
     <label>
-        <span>Cena:</span>
-        <input type="text" name="price" value="<?= $product['price'] ?>" required/>
+        <span>Author:</span>
+        <input type="text" name="author" value="<?= $image['author'] ?>" />
+    </label>
+    <label>
+        <span>Image:</span>
+        <input type="file" name="file" value="<?= $image['file'] ?>" required/>
     </label>
 
-    <textarea name="description" placeholder="Opis..."><?= $product['description'] ?></textarea>
 
-    <input type="hidden" name="id" value="<?= $product['_id'] ?>">
+    <input type="hidden" name="id" value="<?= $image['_id'] ?>">
 
     <div>
-        <a href="products" class="cancel">Anuluj</a>
-        <input type="submit" value="Zapisz"/>
+        <a href="images" class="cancel">Cancel</a>
+        <input type="submit" value="Save"/>
     </div>
 </form>
+
+
 
 </body>
 </html>

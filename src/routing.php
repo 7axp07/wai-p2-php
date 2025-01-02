@@ -1,12 +1,11 @@
 <?php
 
 $routing = [
-    '/' => 'products',
-    '/products' => 'products',
-    '/view' => 'product',
+    '/' => 'images',
+    '/images' => 'images',
+    '/view' => 'image',
     '/edit' => 'edit',
     '/delete' => 'delete',
-    '/cart' => 'cart',
-    '/cart/clear' => 'clear_cart',
-    '/cart/add' => 'add_to_cart',
+    '/login'=> 'login',
+    '/gallery' => 'gallery',
 ];

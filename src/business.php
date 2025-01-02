@@ -18,40 +18,75 @@ function get_db()
     return $db;
 }
 
-function get_products()
+function get_images()
 {
     $db = get_db();
-    return $db->products->find()->toArray();
+    return $db->images->find()->toArray();
 }
 
-function get_products_by_category($cat)
+function get_images_by_category($cat)
 {
     $db = get_db();
-    $products = $db->products->find(['cat' => $cat]);
-    return $products;
+    $images = $db->images->find(['cat' => $cat]);
+    return $images;
 }
 
-function get_product($id)
+function get_image($id)
 {
     $db = get_db();
-    return $db->products->findOne(['_id' => new ObjectID($id)]);
+    return $db->images->findOne(['_id' => new ObjectID($id)]);
 }
 
-function save_product($id, $product)
-{
-    $db = get_db();
+function upload($id, $image, $imageData){
 
-    if ($id == null) {
-        $db->products->insertOne($product);
-    } else {
-        $db->products->replaceOne(['_id' => new ObjectID($id)], $product);
+    $errorMsg = "";
+    $errors = 0;
+
+    if (!empty($image)){
+        $fileName = pathinfo($_FILES['file']['name']);
+        $fileExt = $fileName['extension'];
+        $fileSize = $_FILES['file']['size'];
     }
 
-    return true;
+    if ($fileSize > 1000000){
+        $errorMsg = "File is too big";
+        $errors++;
+        echo $errorMsg;
+    }
+
+    $allowed = array('jpg', 'jpeg', 'png');
+    if (!in_array($fileExt, $allowed)){
+        $errorMsg = "File type not allowed";
+        $errors++;
+        echo $errorMsg;
+    }
+   /* else {
+        $imageData['ext'] = (string)$fileExt;
+    }*/
+
+    if ($errors == 0){
+        $db = get_db();
+
+        if ($id == null) {
+            $insert = $db->images->insertOne($imageData);
+            $imgID = (string)$insert->getInsertedId();
+        } else {
+            $db->images->replaceOne(['_id' => new ObjectID($id)], $image);
+        }
+        $newFileName = $imgID.".".$fileExt;
+        $fileLoc = "upload/".$newFileName;
+        move_uploaded_file($image, $fileLoc);
+        return true;
+    }
+    else {
+    echo $errorMsg;
+    return false;
+    } 
 }
 
-function delete_product($id)
+function delete_image($id)
 {
     $db = get_db();
-    $db->products->deleteOne(['_id' => new ObjectID($id)]);
+    $db->images->deleteOne(['_id' => new ObjectID($id)]);
+
 }
