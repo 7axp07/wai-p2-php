@@ -2,10 +2,11 @@
 <html>
 <head>
     <title>Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/css/styles.css"/>
 </head>
 <body>
-
+<header><?php dispatch($routing, '/logincreate') ?></header>
 <table>
     <thead>
     <tr>
@@ -20,7 +21,7 @@
         <?php foreach ($images as $image): ?>
             <tr>
                 <td>
-                <a href="view?id=<?= $image['_id'] ?>"><img src="upload/<?= $image['_id']?>.<?= $image['ext']?>" alt="<?= $image['title'] ?>"/></a>
+                <a href="view?id=<?= $image['_id'] ?>"><img src="upload/thumb/t<?= $image['_id']?>.<?= $image['ext']?>" alt="<?= $image['title'] ?>"/></a>
                 </td>
                 <td><?= $image['author'] ?></td>
                 <td>
@@ -46,7 +47,7 @@
     </tfoot>
 </table>
 
-
+<?php dispatch($routing, '/gallery') ?>
 
 </body>
 </html>

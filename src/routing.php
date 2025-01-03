@@ -8,4 +8,6 @@ $routing = [
     '/delete' => 'delete',
     '/login'=> 'login',
     '/gallery' => 'gallery',
+    '/create' => 'create',
+    '/logincreate' => 'logincreate',
 ];

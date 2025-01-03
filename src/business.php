@@ -4,8 +4,7 @@
 use MongoDB\BSON\ObjectID;
 
 
-function get_db()
-{
+function get_db(){
     $mongo = new MongoDB\Client(
         "mongodb://localhost:27017/wai",
         [
@@ -18,21 +17,18 @@ function get_db()
     return $db;
 }
 
-function get_images()
-{
+function get_images(){
     $db = get_db();
     return $db->images->find()->toArray();
 }
 
-function get_images_by_category($cat)
-{
+function get_images_by_category($cat){
     $db = get_db();
     $images = $db->images->find(['cat' => $cat]);
     return $images;
 }
 
-function get_image($id)
-{
+function get_image($id){
     $db = get_db();
     return $db->images->findOne(['_id' => new ObjectID($id)]);
 }
@@ -54,7 +50,7 @@ function upload($id, $image, $imageData){
         echo $errorMsg;
     }
 
-    $allowed = array('jpg', 'jpeg', 'png');
+    $allowed = array('jpg', 'jpeg', 'png', 'PNG', 'JPG', 'JPEG');
     if (!in_array($fileExt, $allowed)){
         $errorMsg = "File type not allowed";
         $errors++;
@@ -78,55 +74,62 @@ function upload($id, $image, $imageData){
         $newFileName = $imgID . "." . $fileExt;
         $fileLoc = "upload/" . $newFileName;
 
-        // Save the original image
         if (move_uploaded_file($_FILES['file']['tmp_name'], $fileLoc)) {
-            
-            $wImg = watermark($fileLoc, $imageData['wmark'], $fileExt);
-            if ($wImg) {
-                $wFileLoc = "upload/w" . $newFileName;
-                if (rename($wImg, $wFileLoc)) {
-                    return true;
-                } 
-            } 
-        } else {
+            thumbnail($fileLoc, $fileExt, $imgID);
+            watermark($fileLoc, $imageData['wmark'], $fileExt, $imgID);
+            return true;
+        }
+        else {
             echo "Failed to save image.";
             return false;
         }
-    } else {
+    }
+    else {
         echo $errorMsg;
         return false;
     }
 }
 
-function watermark($imagePath, $wmark, $ext)
-{
-    if ($ext == "jpg" || $ext == "jpeg") {
-        $img = imagecreatefromjpeg($imagePath);
-    } else if ($ext == "png") {
-        $img = imagecreatefrompng($imagePath);
-    }
+function watermark($imagePath, $wmark, $ext, $id){
+    if ($ext == "jpg" || $ext == "jpeg" || $ext == "JPG" || $ext == "JPEG") { $img = imagecreatefromjpeg($imagePath);}
+    else if ($ext == "png" || $ext == "PNG") { $img = imagecreatefrompng($imagePath);}
 
-    $color = imagecolorallocatealpha($img, 255, 0, 0);
+    $color = imagecolorallocatealpha($img, 255, 0, 0, 80);
     $font = "static/fonts/arial.ttf";
+    $xVal = imagesx($img)/4;
+    $yVal = imagesy($img)/2;
+    $size = $yVal/5;
+    
+    imagettftext($img, $size, 0, $xVal, $yVal+$size, $color, $font, $wmark);
 
-    // Add the watermark text to the image
-    imagettftext($img, 11, 0, 20, 30, $color, $font, $wmark);
-
-    $wImgPath = tempnam(sys_get_temp_dir(), 'wmark_');
-
-    if ($ext == "jpg" || $ext == "jpeg") {
-        imagejpeg($img, $wImgPath);
-    } else if ($ext == "png") {
-        imagepng($img, $wImgPath);
-    }
+    if ($ext == "jpg" || $ext == "jpeg" || $ext == "JPG" || $ext == "JPEG") { imagejpeg($img, "upload/wmarked/w".$id.".jpg");}
+    else if ($ext == "png" || $ext == "PNG") { imagepng($img, "upload/wmarked/w".$id.".png");}
 
     imagedestroy($img);
-
-    return $wImgPath;
 }
 
-function delete_image($id)
-{
+function thumbnail($imagePath, $ext, $id){
+    if ($ext == "jpg" || $ext == "jpeg" || $ext == "JPG" || $ext == "JPEG") { $img = imagecreatefromjpeg($imagePath);}
+    else if ($ext == "png" || $ext == "PNG") { $img = imagecreatefrompng($imagePath);}
+
+    $width = imagesx($img);
+    $height = imagesy($img);
+
+    $newWidth = 200;
+    $newHeight = 125;
+
+    $thumb = imagecreatetruecolor($newWidth, $newHeight);
+
+    imagecopyresized($thumb, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+    if ($ext == "jpg" || $ext == "jpeg" || $ext == "JPG" || $ext == "JPEG") { imagejpeg($thumb, "upload/thumb/t".$id.".jpg");}
+    else if ($ext == "png" || $ext == "PNG") { imagepng($thumb, "upload/thumb/t".$id.".png");}
+
+    imagedestroy($img);
+    imagedestroy($thumb);
+}
+
+function delete_image($id){
     $db = get_db();
     $image = $db->images->findOne(['_id' => new ObjectID($id)]);
 
@@ -135,5 +138,7 @@ function delete_image($id)
         $db->images->deleteOne(['_id' => new ObjectID($id)]);
         $toDelete = (string)$id;
         unlink("upload/" . $toDelete . "." . $fileExt);
+        unlink("upload/wmarked/w" . $toDelete . "." . $fileExt);
+        unlink("upload/thumb/t" . $toDelete . "." . $fileExt);
     }
 }

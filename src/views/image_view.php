@@ -8,7 +8,7 @@
 
 <h1><?= $image['title'] ?></h1>
 
-<img src="upload/<?= $image['_id']?>.<?= $image['ext']?>" alt="<?= $image['title'] ?>"/>
+<img src="upload/wmarked/w<?= $image['_id']?>.<?= $image['ext']?>" alt="<?= $image['title'] ?>"/>
 
 <p>Author: <?= $image['author'] ?></p>
 

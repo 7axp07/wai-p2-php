@@ -28,6 +28,8 @@ function image(&$model)
 
 function gallery(&$model)
 {
+    $images = get_images();
+    $model['images'] = $images;
     return 'partial/gallery_view';
 }
 
@@ -86,4 +88,14 @@ function delete(&$model)
 function login(&$model){
 
     return 'login_view';
+}
+
+function create(&$model){
+
+    return 'create_view';
+}
+
+function logincreate(&$model){
+   
+    return 'partial/logincreate_view';
 }

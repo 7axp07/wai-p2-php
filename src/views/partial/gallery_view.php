@@ -1,25 +1,20 @@
+
 <div id="gallery">
 
     <h2>Gallery</h2>
 
-    <table>
-
-        <tbody>
-        <?php if (!empty($cart)): ?>
-            <?php foreach ($cart as $id => $product): ?>
-                <tr>
-                    <td>
-                        <a href="view?id=<?= $id ?>"><?= $product['name'] ?></a>
-                    </td>
-                    <td><?= $product['amount'] ?></td>
-                </tr>
+    <div class=gallery style="display: grid; gap: 10px;">
+    <?php if (count($images)): ?>
+            <?php foreach ($images as $image): ?>
+                <div class="image">
+                    <a href="view?id=<?= $image['_id'] ?>"><img src="upload/thumb/t<?= $image['_id']?>.<?= $image['ext']?>" alt="<?= $image['title'] ?>"/></a>
+                    <div class="author"><?= $image['author'] ?></div>
+                </div>
             <?php endforeach ?>
         <?php else: ?>
-            <tr>
-                <td colspan="2">Brak produktów w koszyku</td>
-            </tr>
+            <div class="no-images">No Images in Gallery</div>
         <?php endif ?>
-        </tbody>
 
-    </table>
+    
 </div>
+
