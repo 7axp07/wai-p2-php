@@ -103,10 +103,53 @@ function delete(&$model){
 
 function login(&$model){
 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (empty($_POST['user']) || empty($_POST['psw'])) {
+            $model['error'] = 'All fields are required';
+        }
+        else {
+            $pass = $_POST['psw'];
+            $login = $_POST['user'];
+            $user = get_user($_POST['user']);
+
+            if ($user && password_verify($pass, $user['psw'])) {
+                session_regenerate_id();
+                $_SESSION['user_id'] = $user['id'];
+                return 'redirect:images';
+            }
+            else {
+                echo '<em>Invalid username or password.</em>';
+            }
+        }
+    }
+
     return 'login_view';
 }
 
 function create(&$model){
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        if (empty($_POST['email']) || empty($_POST['user']) || empty($_POST['psw']) || empty($_POST['pswR'])) {
+            echo 'All fields are required';
+        }
+        elseif ($_POST['psw'] !== $_POST['pswR']) {
+            echo 'Passwords do not match';
+        }
+        else {
+            $user = [
+                'id' => uniqid(),
+                'email' => $_POST['email'],
+                'user' => $_POST['user'],
+                'psw' => password_hash($_POST['psw'], PASSWORD_DEFAULT)
+            ];
+
+            if (create_user($user)) {
+                return 'redirect:login';
+            }
+            else { echo 'Failed to create account';}
+        }
+    }
 
     return 'create_view';
 }
@@ -116,3 +159,10 @@ function logincreate(&$model){
     return 'partial/logincreate_view';
 }
 
+function logout()
+{
+    session_start();
+    session_unset();
+    session_destroy();
+    return 'redirect:images';
+}

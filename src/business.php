@@ -145,3 +145,15 @@ function delete_image($id){
         unlink("upload/thumb/t" . $toDelete . "." . $fileExt);
     }
 }
+
+
+function get_user($user){
+    $db = get_db();
+    return $db->users->findOne(['user' => $user]);
+}
+
+function create_user($user){
+    $db = get_db();
+    $db->users->insertOne($user);
+    return true;
+}

@@ -17,7 +17,7 @@
     <label for="psw"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="psw" required>
 
-    <label for="psw"><b>Repeat password</b></label>
+    <label for="pswR"><b>Repeat password</b></label>
     <input type="password" placeholder="Repeat Password" name="pswR" required>
 
   </div>

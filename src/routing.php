@@ -10,4 +10,5 @@ $routing = [
     '/gallery' => 'gallery',
     '/create' => 'create',
     '/logincreate' => 'logincreate',
+    '/logout' => 'logout',
 ];
