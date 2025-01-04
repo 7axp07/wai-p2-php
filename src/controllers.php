@@ -1,18 +1,17 @@
 <?php
 require_once 'business.php';
-require_once 'controller_utils.php';
 
 
-function images(&$model)
-{
+function images(&$model){
     $images = get_images();
     $model['images'] = $images;
 
+    gallery($model);
     return 'images_view';
 }
 
-function image(&$model)
-{
+
+function image(&$model){
     if (!empty($_GET['id'])) {
         $id = $_GET['id'];
 
@@ -26,11 +25,29 @@ function image(&$model)
     exit;
 }
 
-function gallery(&$model)
-{
+
+function gallery(&$model){
     $images = get_images();
-    $model['images'] = $images;
-    return 'partial/gallery_view';
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $perPage = 6;
+
+    $pagination = page($images, $page, $perPage);
+    $model['images'] = $pagination['images'];
+    $model['totalPages'] = $pagination['totalPages'];
+    $model['currentPage'] = $pagination['currentPage'];
+}
+
+function page($images, $page, $perPage){
+    $totalImages = count($images);
+    $totalPages = ceil($totalImages / $perPage);
+    $start = ($page - 1) * $perPage;
+    $pagedImg = array_slice($images, $start, $perPage);
+
+    return [
+        'images' => $pagedImg,
+        'totalPages' => $totalPages,
+        'currentPage' => $page
+    ];
 }
 
 function edit(&$model){
@@ -41,7 +58,7 @@ function edit(&$model){
             if (empty($_POST['title'])){
                 $_POST['title'] = "Untitled";
             }
-            else if (empty($_POST['author'])){
+            if (empty($_POST['author'])){
                 $_POST['author'] = "Anonymous";
             }
 
@@ -64,8 +81,7 @@ function edit(&$model){
     return 'edit_view';
 }
 
-function delete(&$model)
-{
+function delete(&$model){
     if (!empty($_REQUEST['id'])) {
         $id = $_REQUEST['id'];
 
@@ -99,3 +115,4 @@ function logincreate(&$model){
    
     return 'partial/logincreate_view';
 }
+

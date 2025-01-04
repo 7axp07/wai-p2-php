@@ -45,22 +45,26 @@ function upload($id, $image, $imageData){
     }
 
     if ($fileSize > 1000000){
-        $errorMsg = "File is too big";
+        $str = "File is too big, max 1MB. ";
+        $errorMsg .= $str;
         $errors++;
-        echo $errorMsg;
     }
 
     $allowed = array('jpg', 'jpeg', 'png', 'PNG', 'JPG', 'JPEG');
     if (!in_array($fileExt, $allowed)){
-        $errorMsg = "File type not allowed";
-        $errors++;
-        echo $errorMsg;
-    }
+        $str = "File type not allowed. ";
+        $errorMsg .= $str;
+        $errors++;}
+       
     else {
         $imageData['ext'] = $fileExt;
     }
 
-    if ($errors == 0) {
+    if ($errors > 0){
+        echo $errorMsg;
+        return false;
+    }
+    else if ($errors == 0) {
         $db = get_db();
 
         if ($id == null) {
@@ -85,7 +89,6 @@ function upload($id, $image, $imageData){
         }
     }
     else {
-        echo $errorMsg;
         return false;
     }
 }
@@ -100,7 +103,7 @@ function watermark($imagePath, $wmark, $ext, $id){
     $yVal = imagesy($img)/2;
     $size = $yVal/5;
     
-    imagettftext($img, $size, 0, $xVal, $yVal+$size, $color, $font, $wmark);
+    imagettftext($img, $size, 0, $xVal, $yVal, $color, $font, $wmark);
 
     if ($ext == "jpg" || $ext == "jpeg" || $ext == "JPG" || $ext == "JPEG") { imagejpeg($img, "upload/wmarked/w".$id.".jpg");}
     else if ($ext == "png" || $ext == "PNG") { imagepng($img, "upload/wmarked/w".$id.".png");}
