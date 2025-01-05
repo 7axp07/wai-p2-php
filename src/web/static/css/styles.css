@@ -71,23 +71,28 @@ html, body, div#gallery, h2 {
     display: grid;
     gap: 10px;
     grid-auto-rows: auto;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     padding-left: 40px;
     padding-right: 40px;
 }
 
 .galleryDiv div {
     align-items: center;
-    padding: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     transition: all 0.1s ease;
 }
 
 .galleryDiv div.image:hover {
     background: rgb(238, 237, 237);
-    border-radius: 10px;
+    border-radius: 20px;
     box-shadow: 0px 1px 5px black;
     transition: all 0.1s ease;
-    padding: 8px;
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-left: 8px;
 }
 
 .galleryDiv div a img {
@@ -103,6 +108,7 @@ html, body, div#gallery, h2 {
 .pagination a {
     text-align: center;
     text-decoration: none;
+    font-size: 30px;
     padding: 3px;
     border-radius: 5px;
     box-shadow: 0px 1px 5px black;

@@ -11,4 +11,5 @@ $routing = [
     '/create' => 'create',
     '/logincreate' => 'logincreate',
     '/logout' => 'logout',
+    '/table' => 'table',
 ];

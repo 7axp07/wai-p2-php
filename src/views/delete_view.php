@@ -12,7 +12,7 @@
     <input type="hidden" name="id" value="<?= $image['_id'] ?>">
 
     <div>
-        <a href="images" class="cancel">Cancel</a>
+        <a href="table" class="cancel">Cancel</a>
         <input type="submit" value="Proceed"/>
     </div>
 </form>

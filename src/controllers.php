@@ -29,12 +29,18 @@ function image(&$model){
 function gallery(&$model){
     $images = get_images();
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $perPage = 6;
+    $perPage = 8;
 
     $pagination = page($images, $page, $perPage);
     $model['images'] = $pagination['images'];
     $model['totalPages'] = $pagination['totalPages'];
     $model['currentPage'] = $pagination['currentPage'];
+}
+
+function table(&$model){
+    $images = get_images();
+    $model['images'] = $images;
+    return 'table_view';
 }
 
 function page($images, $page, $perPage){
@@ -87,7 +93,7 @@ function delete(&$model){
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             delete_image($id);
-            return 'redirect:images';
+            return 'redirect:table';
 
         } else {
             if ($image = get_image($id)) {
