@@ -11,6 +11,7 @@
 <div id="gallery">
     <h2>Gallery</h2>
     <h3><button><a href="/edit">Add New Image</a></button> | <button type="submit" form="favForm">Remember Favourites</button></h3>
+    
     <form id="favForm" method="post" action="/remember_favourites">
         <div class="galleryDiv">
             <?php if (count($images)): ?>
@@ -29,7 +30,9 @@
         </div>
     </form>
 
-    <div class="pagination" style="position: absolute; bottom: 20px;">
+</div>
+
+<div class="pagination">
         <?php if ($currentPage > 1): ?>
             <a href="?page=<?= $currentPage - 1 ?>"> < </a>
         <?php endif ?>
@@ -42,6 +45,6 @@
             <a href="?page=<?= $currentPage + 1 ?>"> > </a>
         <?php endif ?>
     </div>
-</div>
+    
 </body>
 </html>
