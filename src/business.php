@@ -104,7 +104,8 @@ function watermark($imagePath, $wmark, $ext, $id){
     
     imagettftext($img, $size, 0, $xVal, $yVal, $color, $font, $wmark);
 
-    if ($ext == "jpg" || $ext == "jpeg" || $ext == "JPG" || $ext == "JPEG") { imagejpeg($img, "upload/wmarked/w".$id.".jpeg");}
+    if ($ext == "jpg" || $ext == "JPG") { imagejpeg($img, "upload/wmarked/w".$id.".jpg");}
+    else if ($ext == "jpeg" || $ext == "JPEG") { imagejpeg($img, "upload/wmarked/w".$id.".jpeg");}
     else if ($ext == "png" || $ext == "PNG") { imagepng($img, "upload/wmarked/w".$id.".png");}
 
     imagedestroy($img);
@@ -124,7 +125,8 @@ function thumbnail($imagePath, $ext, $id){
 
     imagecopyresized($thumb, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-    if ($ext == "jpg" || $ext == "jpeg" || $ext == "JPG" || $ext == "JPEG") { imagejpeg($thumb, "upload/thumb/t".$id.".jpeg");}
+    if ($ext == "jpg" ||  $ext == "JPG") { imagejpeg($thumb, "upload/thumb/t".$id.".jpg");}
+    else if ($ext == "jpeg" || $ext == "JPEG") { imagejpeg($thumb, "upload/thumb/t".$id.".jpeg");}
     else if ($ext == "png" || $ext == "PNG") { imagepng($thumb, "upload/thumb/t".$id.".png");}
 
     imagedestroy($img);
