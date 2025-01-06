@@ -12,4 +12,5 @@ $routing = [
     '/logincreate' => 'logincreate',
     '/logout' => 'logout',
     '/table' => 'table',
+    '/remember_favourites' => 'remember_favourites',
 ];

@@ -37,6 +37,19 @@ function gallery(&$model){
     $model['currentPage'] = $pagination['currentPage'];
 }
 
+function remember_favourites()
+{
+    session_start();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['fav'])) {
+            $_SESSION['favourites'] = $_POST['fav'];
+        } else {
+            unset($_SESSION['favourites']);
+        }
+    }
+    return 'redirect:images';
+}
+
 function table(&$model){
     $images = get_images();
     $model['images'] = $images;
@@ -159,6 +172,7 @@ function create(&$model){
 
     return 'create_view';
 }
+
 
 function logincreate(&$model){
    
